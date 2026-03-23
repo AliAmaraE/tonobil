@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_tonobil
+    environment:
+      POSTGRES_USER: tonobil_user
+      POSTGRES_PASSWORD: tonobil_password
+      POSTGRES_DB: tonobil_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_tonobil_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend-tonobil
+    container_name: backend_tonobil
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tonobil_db
+      SPRING_DATASOURCE_USERNAME: tonobil_user
+      SPRING_DATASOURCE_PASSWORD: tonobil_password
+      FRONTEND_URL: http://localhost:4200
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend-tonobil
+    container_name: frontend_tonobil
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  postgres_tonobil_data:

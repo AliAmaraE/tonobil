@@ -1,0 +1,42 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Create an Account</h2>
+    <p>Sign up to get started</p>
+
+    <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm" class="auth-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" [(ngModel)]="user.name" required #nameCtrl="ngModel">
+        <div *ngIf="nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)" class="error-msg" style="margin-top: 4px; padding: 6px; font-size: 13px;">
+          Name is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="user.email" required email #emailCtrl="ngModel">
+        <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" class="error-msg" style="margin-top: 4px; padding: 6px; font-size: 13px;">
+          Please enter a valid email address.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="user.password" required minlength="6" #passCtrl="ngModel">
+        <div *ngIf="passCtrl.invalid && (passCtrl.dirty || passCtrl.touched)" class="error-msg" style="margin-top: 4px; padding: 6px; font-size: 13px;">
+          Password must be at least 6 characters long.
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" [disabled]="!signupForm.form.valid">Sign Up</button>
+    </form>
+
+    <div class="divider"><span>OR</span></div>
+
+    <a href="http://localhost:8080/oauth2/authorization/google" class="btn-google">
+      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" class="g-logo">
+      Sign up with Google
+    </a>
+
+    <p class="signup-link">Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>

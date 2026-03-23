@@ -1,0 +1,52 @@
+<div class="dashboard-container">
+  <header>
+    <h2>Welcome, {{ currentUser?.name }}</h2>
+    <button class="btn-danger" (click)="logout()">Logout</button>
+  </header>
+
+  <main class="dashboard-content">
+    <section class="cars-section">
+      <div class="header-actions" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Your Cars</h3>
+        <button class="btn-primary" (click)="toggleAddCarForm()" style="width: auto;">
+          {{ showAddCarForm ? 'Cancel' : 'Add New Car' }}
+        </button>
+      </div>
+      
+      <div class="car-form" *ngIf="showAddCarForm">
+        <h4>Add New Car</h4>
+        <div class="form-group">
+          <label for="brand">Brand</label>
+          <input id="brand" type="text" [(ngModel)]="newCar.brand">
+        </div>
+        <div class="form-group">
+          <label for="model">Model</label>
+          <input id="model" type="text" [(ngModel)]="newCar.model">
+        </div>
+        <div class="form-group">
+          <label for="year">Year</label>
+          <input id="year" type="number" [(ngModel)]="newCar.year">
+        </div>
+        <div class="form-group">
+          <label for="licensePlate">License Plate</label>
+          <input id="licensePlate" type="text" [(ngModel)]="newCar.licensePlate">
+        </div>
+        <button class="btn-primary" (click)="addCar()">Add Car</button>
+      </div>
+
+      <div class="car-list">
+        <div class="card car-card" *ngFor="let car of cars">
+          <div class="car-info">
+            <strong>{{ car.brand }} {{ car.model }}</strong> ({{ car.year }})<br>
+            License: {{ car.licensePlate }}
+          </div>
+          <div class="car-actions">
+            <button class="btn-info" (click)="viewServices(car.id)">Manage Services</button>
+            <button class="btn-danger" (click)="deleteCar(car.id)">Delete</button>
+          </div>
+        </div>
+        <p *ngIf="cars.length === 0" class="empty-state">No cars added yet. Add your first car above!</p>
+      </div>
+    </section>
+  </main>
+</div>

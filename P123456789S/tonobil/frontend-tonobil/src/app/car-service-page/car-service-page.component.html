@@ -1,0 +1,69 @@
+<div class="service-container">
+  <header>
+    <h2>Car Services</h2>
+    <button class="btn-info" (click)="goBack()">Back to Dashboard</button>
+  </header>
+
+  <main class="service-content dashboard-content">
+    <div class="header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h3>Service History</h3>
+      <button class="btn-primary" (click)="toggleAddServiceForm()" style="width: auto;">
+        {{ showAddServiceForm ? 'Cancel' : 'Add New Service' }}
+      </button>
+    </div>
+
+    <div class="service-form" *ngIf="showAddServiceForm">
+      <h4>Add New Service</h4>
+      <div class="form-group">
+        <label for="serviceType">Service Type (e.g., Oil Change)</label>
+        <input id="serviceType" type="text" [(ngModel)]="newService.serviceType">
+      </div>
+      <div class="form-group">
+        <label for="description">Description (Details)</label>
+        <input id="description" type="text" [(ngModel)]="newService.description">
+      </div>
+      <div class="form-group">
+        <label for="cost">Cost (MAD)</label>
+        <input id="cost" type="number" [(ngModel)]="newService.cost">
+      </div>
+      <div class="form-group">
+        <label for="kilometerAtService">Current Kilometer</label>
+        <input id="kilometerAtService" type="number" [(ngModel)]="newService.kilometerAtService">
+      </div>
+      <div class="form-group">
+        <label for="nextServiceKilometer">Next Service Kilometer</label>
+        <input id="nextServiceKilometer" type="number" [(ngModel)]="newService.nextServiceKilometer">
+      </div>
+      <div class="form-group">
+        <label for="serviceDate">Service Date</label>
+        <input id="serviceDate" type="date" [(ngModel)]="newService.serviceDate">
+      </div>
+      <div class="form-group-checkboxes">
+        <label><input type="checkbox" [(ngModel)]="newService.oilFilterChanged"> Oil Filter</label>
+        <label><input type="checkbox" [(ngModel)]="newService.fuelFilterChanged"> Fuel Filter</label>
+        <label><input type="checkbox" [(ngModel)]="newService.airFilterChanged"> Air Filter</label>
+        <label><input type="checkbox" [(ngModel)]="newService.acAirFilterChanged"> AC Air Filter</label>
+      </div>
+      <button class="btn-primary" (click)="addService()">Save Service Record</button>
+    </div>
+
+    <div class="service-list">
+      <div class="card service-card" *ngFor="let srv of services">
+        <div class="service-info">
+          <strong>{{ srv.serviceType }}</strong> - {{ srv.serviceDate | date }}<br>
+          <span class="cost-tag">{{ srv.cost }} MAD</span><br>
+          Current KM: {{ srv.kilometerAtService }} | Next KM: {{ srv.nextServiceKilometer }}<br>
+          <small class="desc-text">{{ srv.description }}</small>
+          <div class="filters-changed">
+            <span *ngIf="srv.oilFilterChanged" class="badge badge-oil">Oil Filter</span>
+            <span *ngIf="srv.fuelFilterChanged" class="badge badge-fuel">Fuel Filter</span>
+            <span *ngIf="srv.airFilterChanged" class="badge badge-air">Air Filter</span>
+            <span *ngIf="srv.acAirFilterChanged" class="badge badge-ac">AC Air Filter</span>
+          </div>
+        </div>
+        <button class="btn-danger" (click)="deleteService(srv.id)">Remove</button>
+      </div>
+      <p *ngIf="services.length === 0" class="empty-state">No services recorded for this car.</p>
+    </div>
+  </main>
+</div>
